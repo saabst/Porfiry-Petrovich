@@ -115,24 +115,33 @@ porfiry_project/
 
 ### Конфигурация (.env)
 ```env
-# Обязательные параметры
-XIAOZHI_MCP_TOKEN=ваш_токен_xiaozhi
-DEEPSEEK_API_KEY=ваш_ключ_deepseek
 
-# Опциональные Google Docs
-DIARY_DOC_ID=id_документа_дневника
-NOVEL_DOC_ID=id_документа_романа
-GOOGLE_CREDENTIALS_FILE=credentials.json
+XIAOZHI_MCP_TOKEN= мсп ксиаоши
+DEEPSEEK_API_KEY= ключ дипсик
+DEEPSEEK_MODEL=deepseek-chat
+DIARY_DOC_ID= айди дневника (гугл док)
+NOVEL_DOC_ID= айди романа (гугл док)
+GOOGLE_CREDENTIALS_FILE=credentials.json - авторизация гугл сервисная
+COMPILE_THRESHOLD=6 #Сколько сообщений диалога для компиляции главы
 
-# Настройки компиляции
-COMPILE_THRESHOLD=12
-AUTHOR_STYLE=pelevin  # pelevin или dostoevsky
+# Дополнительные переменные (режим работы)
+AUTHOR_STYLE=pelevin           # dostoevsky, pelevin, или путь к своему yaml
+USE_GRAPH=false                 # включить граф знаний
+USE_IMAGES=true                # генерировать иллюстрации
+OUTPUT_DIR=output              # папка для сохранения markdown, images, graph
+TIMEZONE=Europe/Moscow
 
-# Расширенные возможности
-USE_GRAPH=true        # Включить граф знаний
-USE_IMAGES=true       # Генерация иллюстраций
-USE_PDF=true          # Создание PDF
-PDF_AFTER_CHAPTER=1   # После скольки глав создавать PDF
+USE_PDF=true
+PDF_AFTER_CHAPTER=2
+PDF_OUTPUT=book.pdf
+
+# Настройки графа
+GRAPH_STATE_FILE=knowledge_graph.json
+
+# Настройки генерации иллюстраций
+IMAGE_PROVIDER=pollinations    # pollinations или none
+IMAGE_WIDTH=1024
+IMAGE_HEIGHT=1024
 
 # Логирование
 LOG_LEVEL=INFO
@@ -228,8 +237,6 @@ ls -la output/
 - [ ] Плагинная архитектура
 - [ ] API для интеграции с другими системами
 
-**Предложения по улучшению**: [ДОБАВЛЕНИЕ_НОВЫХ_ФУНКЦИЙ.md](ДОБАВЛЕНИЕ_НОВЫХ_ФУНКЦИЙ.md)
-
 ## 📜 Лицензия
 
 **MIT License with Attribution**
@@ -260,9 +267,7 @@ Repository: https://github.com/saabst/Porfiry-Petrovich
 
 ## 📞 Поддержка
 
-- **Issues**: [GitHub Issues](https://github.com/saabst/Porfiry-Petrovich/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/saabst/Porfiry-Petrovich/discussions)
-- **Telegram**: [@saabst](https://t.me/saabst)
+- **Telegram**: [@ksodikend](https://t.me/ksodikend)
 
 ---
 
@@ -283,8 +288,6 @@ Repository: https://github.com/saabst/Porfiry-Petrovich
 ### 🧠 Исследователи и философы
 - Изучают возможности AI в творчестве
 - Анализируют паттерны мышления через графы знаний
-
-**Полный обзор проекта**: [README_ИТОГ.md](README_ИТОГ.md)
 
 ---
 
