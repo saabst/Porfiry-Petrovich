@@ -74,7 +74,23 @@ class Compiler:
             state = self.state.load_state()
             entries_text = "\n".join([f"[{e['id']}] {e['text']}" for e in cache])
             graph_context = self.state.get_graph_context()
-            prompt_data = self.style_engine.build_prompt(entries_text, graph_context, state["chapter_count"])
+            # Получаем контекст предыдущей главы для связности сюжета
+            prev_chapter_context = None
+            prev_chapter = self.export_mgr.get_last_chapter_text()
+            if prev_chapter:
+                prev_lines = prev_chapter.split('\n\n')
+                chapter_entries = [l for l in prev_lines if l.strip() and not l.startswith('#') and not l.startswith('---')]
+                if chapter_entries:
+                    prev_chapter_context = chapter_entries[-1].strip()[:2000]
+                    logger.info(f"📖 Добавлен контекст предыдущей главы ({len(prev_chapter_context)} символов)")
+            
+            prompt_data = self.style_engine.build_prompt(
+                entries_text, 
+                graph_context, 
+                state["chapter_count"],
+                prev_chapter_context
+            )
+            
             logger.info(f"Стиль: {Config.AUTHOR_STYLE}, глава {state['chapter_count']}")
 
             headers = {"Authorization": f"Bearer {Config.DEEPSEEK_API_KEY}", "Content-Type": "application/json"}
@@ -118,7 +134,8 @@ class Compiler:
                                     img_filename = f"chap_{state['chapter_count']}.png"
                                     img_path = await self.image_gen.generate(
                                         chapter_text[:600],
-                                        os.path.join(Config.OUTPUT_DIR, "images", img_filename)
+                                        os.path.join(Config.OUTPUT_DIR, "images", img_filename),
+                                        style=Config.AUTHOR_STYLE
                                     )
                                     if img_path:
                                         image_path = img_path

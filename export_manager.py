@@ -20,6 +20,16 @@ class ExportManager:
     def add_chapter(self, chapter_number: int, title: str, content: str, image_path: Optional[str] = None):
         self.chapters.append((chapter_number, title, content, image_path))
     
+    def get_last_chapter_text(self) -> Optional[str]:
+        """Возвращает текст последней главы для передачи контекста в следующую"""
+        if self.chapters:
+            return self.chapters[-1][2]  # content - третий элемент кортежа
+        # Если chapters пуст, проверяем, может есть уже записанный markdown-файл
+        if os.path.exists(self.markdown_path):
+            with open(self.markdown_path, 'r', encoding='utf-8') as f:
+                return f.read()
+        return None
+
     def write_markdown(self):
         with open(self.markdown_path, 'w', encoding='utf-8') as f:
             f.write(f"# {self._get_book_title()}\n\n")
